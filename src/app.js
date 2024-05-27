@@ -19,6 +19,9 @@ app.use(morgan("dev"));
 app.use(morgan("combined", { stream: httpLogStream }));
 app.use(cors());
 
+// Serve static files from the uploads directory
+app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
+
 app.use("/api", authRoute);
 app.use("/api", userRoute);
 

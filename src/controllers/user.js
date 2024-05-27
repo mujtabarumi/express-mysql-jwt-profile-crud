@@ -5,8 +5,6 @@ exports.uploadProfileImage = (req, res) => {
   const { filename } = req.file;
   const { id } = req.user;
 
-  console.log("filename", req.file);
-
   User.uploadProfileImage(filename, id, (err, data) => {
     if (err) {
       res.status(500).send({
@@ -16,9 +14,7 @@ exports.uploadProfileImage = (req, res) => {
     } else {
       res.status(201).send({
         status: "success",
-        data: {
-          data,
-        },
+        message: "image uploaded",
       });
     }
   });
@@ -51,10 +47,14 @@ exports.getProfile = (req, res) => {
         message: err.message,
       });
     } else {
+      // Generate image URL
+      const imageUrl = data.profile_image ? `${req.protocol}://${req.get("host")}/uploads/${data.profile_image}` : null;
+
       res.status(201).send({
         status: "success",
         data: {
-          data,
+          ...data,
+          profile_image: imageUrl,
         },
       });
     }
@@ -63,9 +63,7 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
   const { first_name, last_name, email, password, dob, gender } = req.body;
-
   const { id } = req.user;
-
   const user = {
     first_name: first_name.trim(),
     last_name: last_name.trim(),

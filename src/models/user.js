@@ -119,13 +119,14 @@ class User {
 
   static uploadProfileImage(filename, userId, cb) {
     db.query(uploadProfileImageQuery, [filename, userId], (err, res) => {
+      console.log("object", res);
       if (err) {
         logger.error(err.message);
         cb(err, null);
         return;
       }
-      if (res.length) {
-        cb(null, res[0]);
+      if (res) {
+        cb(null, res);
         return;
       }
       cb({ kind: "not_found" }, null);

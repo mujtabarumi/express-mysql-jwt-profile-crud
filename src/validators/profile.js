@@ -26,20 +26,6 @@ const update = (req, res, next) => {
   validatorHandler(req, res, next, schema);
 };
 
-const profileImage = (req, res, next) => {
-  console.log("file", req.file);
-  if (!req.file) {
-    res.send({ msg: "no image selected" });
-    return;
-  }
-  if (!req.file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-    res.send({ msg: "Only image files (jpg, jpeg, png) are allowed!" });
-    return;
-  }
-  next();
-};
-
 module.exports = {
   update,
-  profileImage,
 };
